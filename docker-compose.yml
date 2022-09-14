@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:6
+  rate-limiter-svc:
+    image: golang:1.18
+    depends_on:
+      - redis
+    volumes:
+    - "./:/mnt/pwd"
+    environment:
+      - CONFIG_FILE=/mnt/pwd/config.json
+      - GOPATH=/mnt
+    command: ./docker-entrypoint.sh
+    working_dir: /mnt/pwd
+    ports:
+    - "8080:8080"
+
